@@ -5,7 +5,7 @@
 ### Product 데이터 구조
 | 항목 | 설명 |
 |------|------|
-| 보유 할 목록 | brand, category, price |
+| 보유 할 목록 | brand(string), category(string), price(int) |
 | 값 정보 | @Min, @NotBlank 등 유효성 검증 포함 |
 
 ### 주요 API 목록
