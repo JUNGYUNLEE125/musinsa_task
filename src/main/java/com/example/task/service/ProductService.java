@@ -9,6 +9,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.example.task.exception.BaseException;
@@ -24,6 +26,7 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
+    @Cacheable("minPriceByCategory")
     public Map<String, Object> getLowestPricesByCategory() {
         List<Product> productList = productRepository.findLowestPricesForAllCategories();
         if (productList == null)
@@ -61,6 +64,7 @@ public class ProductService {
         }
     }
 
+    @Cacheable("minPriceByBrand")
     public Map<String, Object> getLowestPricesBySingleBrand() {
         NumberFormat numberFormat = NumberFormat.getInstance();
 
@@ -103,6 +107,7 @@ public class ProductService {
         }
     }
 
+    @Cacheable("infoPriceByCategory")
     public Map<String, Object> getPriceInfoByCategory(String category) {
         NumberFormat numberFormat = NumberFormat.getInstance();
 
@@ -142,6 +147,7 @@ public class ProductService {
     }
         
     // 1) 상품 추가
+    @CacheEvict(value = { "minPriceByCategory", "minPriceByBrand", "infoPriceByCategory" }, allEntries = true)
     public Product addProduct(Product product) {        
         if (productRepository.existsByCategoryAndBrand(product.getCategory(), product.getBrand())) {
             throw new BaseException(ResultCode.ALREADY_EXISTS, "상품 정보를 확인해주세요.");
@@ -150,6 +156,7 @@ public class ProductService {
     }
 
     // 2) 상품 업데이트
+    @CacheEvict(value = { "minPriceByCategory", "minPriceByBrand", "infoPriceByCategory" }, allEntries = true)
     public void updateProduct(Long id, Product product) {
         Optional<Product> existingProduct = productRepository.findById(id);
         if (existingProduct.isEmpty()) {
@@ -163,6 +170,7 @@ public class ProductService {
     }
 
     // 3) 상품 삭제
+    @CacheEvict(value = { "minPriceByCategory", "minPriceByBrand", "infoPriceByCategory" }, allEntries = true)
     public void deleteProduct(Long id) {
         Optional<Product> product = productRepository.findById(id);
         if (product.isEmpty()) {
