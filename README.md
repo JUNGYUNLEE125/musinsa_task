@@ -9,14 +9,14 @@
 | 값 정보 | @Min, @NotBlank 등 유효성 검증 포함 |
 
 ### 주요 API 목록
-| Method | Endpoint                                 | 설명                        |
-|--------|------------------------------------------|-----------------------------|
-| GET    | /api/products/lowest-price-by-category   | 카테고리별 최저가 상품 조회 |
-| GET    | /api/products/lowest-price-by-brand      | 브랜드별 최저가 상품 묶음 조회 |
-| GET    | /api/products/price-info-by-category     | 카테고리별 최저/최고가 조회 |
-| POST   | /api/products/add                        | 상품 추가                   |
-| PUT    | /api/products/update/{id}                | 상품 정보 업데이트           |
-| DELETE | /api/products/delete/{id}                | 상품 삭제                   |
+| Method | Endpoint                           | 설명                        |
+|--------|------------------------------------|-----------------------------|
+| GET    | /api/products/minPriceByCategory   | 카테고리별 최저가 상품 조회 |
+| GET    | /api/products/minPriceByBrand      | 브랜드별 최저가 상품 묶음 조회 |
+| GET    | /api/products/infoPriceByCategory  | 카테고리별 최저/최고가 조회 |
+| POST   | /api/products/add                  | 상품 추가                   |
+| PUT    | /api/products/update/{id}          | 상품 정보 업데이트           |
+| DELETE | /api/products/delete/{id}          | 상품 삭제                   |
 
 ### 응답 코드 및 메시지
 | 응답 코드 | 설명                                 | 메시지 예시                        |
@@ -53,8 +53,14 @@ JDK 17, Gradle 8.5
 
 ### 기타 추가 정보
 
-- 플랫폼: Spring Boot + Spring Data JPA + Lombok + H2 (Test)
+- 플랫폼: Spring Boot + Spring Data JPA + Lombok + H2 (Test) + Caffeine Cache
 - 연결 DB: H2 및 현재는 Memory DB (MySQL 변경 가능)
 - 테스트 모델: @WebMvcTest, @DataJpaTest, @MockBean 등을 통한 진관적 테스트
 - 예외 처리: BaseException 및 ResultCode, ResultValue 기반 통일 응답 구조
+
+
+### 로컬캐시 추가
+- minPriceByCategory, minPriceByBrand, infoPriceByCategory도 호출시 리턴되는 응답데이터를 캐시로 5초 동안 저장
+- add, /update/{id}, /delete/{id} API 호출시에 데이터가 변경되므로 캐시된 데이터 삭제 
+- 라이브 적용시 redis로 대체하여 저장 구현, 캐시 삭제시 pub/sub 기능 사용하여 캐시 무효화 구현 
 
