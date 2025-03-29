@@ -62,5 +62,5 @@ JDK 17, Gradle 8.5
 ### 로컬캐시 추가
 - minPriceByCategory, minPriceByBrand, infoPriceByCategory도 호출시 리턴되는 응답데이터를 캐시로 5초 동안 저장
 - add, /update/{id}, /delete/{id} API 호출시에 데이터가 변경되므로 캐시된 데이터 삭제 
-- 라이브 적용시 redis로 대체하여 저장 구현, 캐시 삭제시 pub/sub 기능 사용하여 캐시 무효화 구현 
+- 라이브 적용시 redis로 대체하여 저장, 캐시 삭제시 pub/sub 기능 사용하여 캐시 무효화 구현이 필요
 
