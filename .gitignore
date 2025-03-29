@@ -37,11 +37,7 @@ out/
 .vscode/
 README.md
 .DS_Store
-gradlew
-gradlew.bat
 gradle/.DS_Store
-gradle/wrapper/gradle-wrapper.jar
-gradle/wrapper/gradle-wrapper.properties
 src/.DS_Store
 src/main/.DS_Store
 src/test/.DS_Store
